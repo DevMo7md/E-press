@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+    
+{% block content %}
+<style>
+
+    .dash .note-editor {
+        background-color: #ffffff; /* الخلفية الخاصة بـ Summernote */
+        border: 1px solid #ccc; /* الحدود الخاصة بـ Summernote */
+        min-height: 300px; /* تحديد الحد الأدنى للارتفاع */
+        padding: 10px; /* مساحة داخلية */
+    }
+    .dash .note-toolbar {
+    background-color: #f8f9fa; /* لون خلفية شريط الأدوات */
+    }
+
+    .dash .note-editable {
+    color: #333; /* لون النص */
+    font-family: Arial, sans-serif; /* نوع الخط */
+
+}
+
+</style>
+<!-- Contact Start -->
+    <div class="container-fluid mt-5 pt-3">
+        <div class="container text-right" dir="rtl">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title mb-0 text-right" dir="rtl">
+                        <h4 class="m-0 text-uppercase font-weight-bold" style="font-family: 'Kufam', sans-serif;">لوحة التحكم</h4><a href="{% url 'dashboard' %}"><i class="fa-solid fa-arrow-left" style="font-size:xx-large;"></i></a>
+                    </div>
+                    <div class="bg-white border border-top-0 p-4 mb-3">
+
+                        <div class="mb-4">
+                            <div class="mb-4 d-flex justify-content-between align-items-center">
+                                <h4 class="text-uppercase font-weight-bold">تواصلاتك</h4>
+                            </div>
+                            </br>
+                            <div>
+                                <form action="{% url 'messages' %}" role="search" method="GET">
+                                    <div class="input-group ml-auto" style="width: 100%; max-width: 300px;">
+                                        <input type="text" class="form-control border" style="border-radius: 5px;" name="search-bar" type="search" placeholder="ابحث عن رسالة" aria-label="Search" id="search">
+                                        <div class="input-group-append">
+                                            <button class="input-group-text bg-primary text-dark border-0 px-3"><i
+                                                    class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <br><br>
+                            
+                            <div class="row">
+                                <div class="table-responsive" style="padding: 0px;">
+                                    <form method="GET" action="">
+                                    <select name="status" class="form-control">
+                                        <option value="all" {% if status == 'all' %}selected{% endif %}>كل الرسائل</option>
+                                        <option value="seen" {% if status == 'seen' %}selected{% endif %}>تم رؤيتها</option>
+                                        <option value="not_seen" {% if status == 'not_seen' %}selected{% endif %}>لم تتم رؤيتها</option>
+                                    </select><br>
+                                    </form>
+                                    <table class="table table-striped table-hover main-content">
+                                        <thead class="table-dark">
+                                            <tr>
+                                            <th scope="col">معرف الرسالة</th>
+                                            <th scope="col">معرف الراسل</th>
+                                            <th scope="col">اسم المستخدم</th>
+                                            <th scope="col">الاسم</th>
+                                            <th scope="col">رقم الراسل</th>
+                                            <th scope="col">البريد الإلكتروني</th>
+                                            <th scope="col">عنوان الموضوع</th>
+                                            <th scope="col">الرسالة</th>
+                                            <th scope="col">الحالة</th>
+                                            <th scope="col">حذف الرسالة</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for ms in contacts %}
+                                                <tr>            
+                                                <td><a href="{% url 'message_page' ms.id %}" style="color: brown;">{{ms.id}}</a></td>
+                                                <td>{{ms.user.id}}</td>
+                                                <td>{{ms.user.username}}</td>
+                                                <td>{{ms.name}}</td>
+                                                <td>phone</td>
+                                                <td>{{ms.email}}</td>
+                                                <td>{{ms.subject|truncatechars:25}}</td>
+                                                <td>{{ms.message|truncatechars:30}}</td>
+                                                {% if ms.is_viewd %}
+                                                <td style="color: green;"><i class="fa-solid fa-check"></i></td>
+                                                {% else %}
+                                                <td style="color: red;"><i class="fa-solid fa-xmark"></i></td>
+                                                {% endif %}
+                                                
+                                                <td><a href="{% url 'delete_contact' ms.id %}" style="border-radius: 5px;" class="btn btn-sm btn-danger">حذف</a></td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>    
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    document.querySelector('select[name="status"]').addEventListener('change', function() {
+    this.form.submit();
+});
+</script>    
+{% endblock %}

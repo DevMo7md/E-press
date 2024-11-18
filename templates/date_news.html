@@ -1,0 +1,261 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<!-- News With Sidebar Start -->
+    <div class="container-fluid mt-5 pt-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="section-title">
+                                <h4 class="m-0 text-uppercase font-weight-bold">Date: {{foo}}</h4>
+                                <a class="text-secondary font-weight-medium text-decoration-none" href="">View All</a>
+                            </div>
+                        </div>
+                    {% if news %}
+                        
+                        {% for new in news|slice:":6" %}
+                        <div class="col-lg-6">
+                            <div class="position-relative mb-3">
+                                <img class="img-fluid w-100" src="{{new.image.url}}" style="object-fit: cover; height:260px;">
+                                <div class="bg-white border border-top-0 p-4">
+                                    <div class="mb-2">
+                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                            href="{% url 'news_by_category' new.category.name %}">{{new.category.name}}</a>
+                                        <a class="text-body" href="{% url 'news_by_date' new.add_date %}"><small>{{new.add_date}}</small></a>
+                                    </div>
+                                    <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" href="{% url 'news_page' new.id %}">{{new.title}}</a>
+                                    <p class="m-0">{{new.info|truncatechars:"150"}}</p>
+                                </div>
+                                <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
+                                    <div class="d-flex align-items-center">
+                                        <img class="rounded-circle mr-2" src="{{new.journalist.photo.url}}" width="25" height="25" alt="">
+                                        <small>{{new.journalist.author.first_name}} {{new.journalist.author.last_name}}</small>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <small class="ml-3"><i class="far fa-eye mr-2"></i>{{new.num_of_views}}</small>
+                                        <small class="ml-3"><i class="far fa-comment mr-2"></i>{{new.num_of_comments}}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                        
+
+                        {% for new in news|slice:"6:10" %}
+                        <div class="col-lg-6">
+                            <div class="d-flex align-items-center bg-white mb-3" style="height: 110px;">
+                                <img class="img-fluid" src="{{new.image.url}}" alt="">
+                                <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
+                                    <div class="mb-2">
+                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="{% url 'news_by_category' new.category.name %}">{{new.category.name}}</a>
+                                        <a class="text-body" href="{% url 'news_by_date' new.add_date %}"><small>{{new.add_date}}</small></a>
+                                    </div>
+                                    <a class="h6 m-0 text-secondary text-uppercase font-weight-bold" href="{% url 'news_page' new.id %}">{{new.info|truncatechars:"150"}}</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                        {% for new in news|slice:"9:10" %}
+                        <div class="col-lg-12">
+                            <div class="row news-lg mx-0 mb-3">
+                                <div class="col-md-6 h-100 px-0">
+                                    <img class="img-fluid h-100" src="{{new.image.url}}" style="object-fit: cover;">
+                                </div>
+                                <div class="col-md-6 d-flex flex-column border bg-white h-100 px-0">
+                                    <div class="mt-auto p-4">
+                                        <div class="mb-2">
+                                            <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                                href="{% url 'news_by_category' new.category.name %}">{{new.category.name}}</a>
+                                            <a class="text-body" href="{% url 'news_by_date' new.add_date %}"><small>{{new.add_date}}</small></a>
+                                        </div>
+                                        <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" href="">{{new.title}}</a>
+                                        <p class="m-0">{{new.info}}</p>
+                                    </div>
+                                    <div class="d-flex justify-content-between bg-white border-top mt-auto p-4">
+                                        <div class="d-flex align-items-center">
+                                            <img class="rounded-circle mr-2" src="{{new.journalist.photo.url}}" width="25" height="25" alt="">
+                                            <small>{{new.journalist.author.first_name}} {{new.journalist.author.last_name}}</small>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <small class="ml-3"><i class="far fa-eye mr-2"></i>{{new.num_of_views}}</small>
+                                            <small class="ml-3"><i class="far fa-comment mr-2"></i>{{new.num_of_comments}}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                        {% for new in news|slice:"10:14" %}
+                        <div class="col-lg-6">
+                            <div class="d-flex align-items-center bg-white mb-3" style="height: 110px;">
+                                <img class="img-fluid" src="{{new.image.url}}" alt="">
+                                <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
+                                    <div class="mb-2">
+                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="{% url 'news_by_category' new.category.name %}">{{new.category.name}}</a>
+                                        <a class="text-body" href="{% url 'news_by_date' new.add_date %}"><small>{{new.add_date}}</small></a>
+                                    </div>
+                                    <a class="h6 m-0 text-secondary text-uppercase font-weight-bold" href="{% url 'news_page' new.id %}">{{new.info|truncatechars:"150"}}</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                        {% for new in news|slice:"14:" %}
+                        <div class="col-lg-6">
+                            <div class="position-relative mb-3">
+                                <img class="img-fluid w-100" src="{{new.image.url}}" style="object-fit: cover; height:260px;">
+                                <div class="bg-white border border-top-0 p-4">
+                                    <div class="mb-2">
+                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                            href="{% url 'news_by_category' new.category.name %}">{{new.category.name}}</a>
+                                        <a class="text-body" href="{% url 'news_by_date' new.add_date %}"><small>{{new.add_date}}</small></a>
+                                    </div>
+                                    <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" href="{% url 'news_page' new.id %}">{{new.title}}</a>
+                                    <p class="m-0">{{new.info|truncatechars:"150"}}</p>
+                                </div>
+                                <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
+                                    <div class="d-flex align-items-center">
+                                        <img class="rounded-circle mr-2" src="{{new.journalist.photo.url}}" width="25" height="25" alt="">
+                                        <small>{{new.journalist.author.first_name}} {{new.journalist.author.last_name}}</small>
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <small class="ml-3"><i class="far fa-eye mr-2"></i>{{new.num_of_views}}</small>
+                                        <small class="ml-3"><i class="far fa-comment mr-2"></i>{{new.num_of_comments}}</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+
+                    {% else %}
+                        <div class="col-lg-12">
+                            <div class="position-relative text-center">
+                                <img src="{% static 'img/no new news.png' %}" alt="" class="img-fluid">
+                                <a href="{% url 'allnews' %}" class="btn position-absolute start-50 translate-middle-x" 
+                                style="bottom: 10px; background-color: #FFCC00; color: #000000; font-family: 'Kufam', sans-serif; border-radius: 5px;">
+                                    أخر الأخبار
+                                </a>
+                            </div>
+                        </div>
+                    {% endif %}
+                    </div>
+
+                </div>
+                
+                <div class="col-lg-4">
+                    <!-- Social Follow Start -->
+                    <div class="mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-uppercase font-weight-bold">Follow Us</h4>
+                        </div>
+                        <div class="bg-white border border-top-0 p-3">
+                            <a href="" class="d-block w-100 text-white text-decoration-none mb-3" style="background: #39569E;">
+                                <i class="fab fa-facebook-f text-center py-4 mr-3" style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
+                                <span class="font-weight-medium">12,345 Fans</span>
+                            </a>
+                            <a href="" class="d-block w-100 text-white text-decoration-none mb-3" style="background: #52AAF4;">
+                                <i class="fab fa-twitter text-center py-4 mr-3" style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
+                                <span class="font-weight-medium">12,345 Followers</span>
+                            </a>
+                            <a href="" class="d-block w-100 text-white text-decoration-none mb-3" style="background: #0185AE;">
+                                <i class="fab fa-linkedin-in text-center py-4 mr-3" style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
+                                <span class="font-weight-medium">12,345 Connects</span>
+                            </a>
+                            <a href="" class="d-block w-100 text-white text-decoration-none mb-3" style="background: #C8359D;">
+                                <i class="fab fa-instagram text-center py-4 mr-3" style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
+                                <span class="font-weight-medium">12,345 Followers</span>
+                            </a>
+                            <a href="" class="d-block w-100 text-white text-decoration-none mb-3" style="background: #DC472E;">
+                                <i class="fab fa-youtube text-center py-4 mr-3" style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
+                                <span class="font-weight-medium">12,345 Subscribers</span>
+                            </a>
+                            <a href="" class="d-block w-100 text-white text-decoration-none" style="background: #055570;">
+                                <i class="fab fa-vimeo-v text-center py-4 mr-3" style="width: 65px; background: rgba(0, 0, 0, .2);"></i>
+                                <span class="font-weight-medium">12,345 Followers</span>
+                            </a>
+                        </div>
+                    </div>
+                    <!-- Social Follow End -->
+
+                   <!-- Ads Start -->
+                    {% if advertisment %}
+                    <div class="mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-uppercase font-weight-bold">Advertisement</h4>
+                        </div>
+                        {% for ads in advertisment %}
+                        <div class="bg-white text-center border border-top-0 p-3">
+                            <a href="{{ads.image.url}}"><img class="img-fluid" src="{{ads.image.url}}" style="height: 200px; width: 400px;" alt=""></a>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <!-- Ads End -->
+
+                    <!-- Popular News Start -->
+                    <div class="mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-uppercase font-weight-bold">Tranding News</h4>
+                        </div>
+                        {% for news in trending_news|slice:":4" %}
+                        <div class="bg-white border border-top-0 p-3">                    
+                            <div class="d-flex align-items-center bg-white mb-3" style="height: 110px;">
+                                <img class="img-fluid" style="height: 110px; width: 110px;" src="{{news.image.url}}" alt="">
+                                <div class="w-100 h-100 px-3 d-flex flex-column justify-content-center border border-left-0">
+                                    <div class="mb-2">
+                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-1 mr-2" href="{% url 'news_by_category' news.category.name %}">{{news.category.name}}</a>
+                                        <a class="text-body" href="{% url 'news_by_date' news.add_date %}"><small>{{news.add_date}}</small></a>
+                                    </div>
+                                    <a class="h6 m-0 text-secondary text-uppercase font-weight-bold" href="{% url 'news_page' news.id %}">{{news.info|truncatechars:40}}</a>
+                                </div>
+                            </div>    
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <!-- Popular News End -->
+
+                    <!-- Newsletter Start -->
+                    <div class="mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-uppercase font-weight-bold">Newsletter</h4>
+                        </div>
+                        <div class="bg-white text-center border border-top-0 p-3">
+                            <p>Aliqu justo et labore at eirmod justo sea erat diam dolor diam vero kasd</p>
+                            <div class="input-group mb-2" style="width: 100%;">
+                                <input type="text" class="form-control form-control-lg" placeholder="Your Email">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary font-weight-bold px-3">Sign Up</button>
+                                </div>
+                            </div>
+                            <small>Lorem ipsum dolor sit amet elit</small>
+                        </div>
+                    </div>
+                    <!-- Newsletter End -->
+
+                    <!-- Tags Start -->
+                    <div class="mb-3">
+                        <div class="section-title mb-0">
+                            <h4 class="m-0 text-uppercase font-weight-bold">Tags</h4>
+                        </div>
+                        <div class="bg-white border border-top-0 p-3">
+                            <div class="d-flex flex-wrap m-n1">
+                                {% for cat in categories %}
+                                <a href="{% url 'news_by_category' cat.name %}" class="btn btn-sm btn-outline-secondary m-1">{{cat.name}}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tags End -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- News With Sidebar End -->
+
+{% endblock %}

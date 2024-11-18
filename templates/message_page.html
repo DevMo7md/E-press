@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+    
+{% block content %}
+<style>
+
+    .dash .note-editor {
+        background-color: #ffffff; /* الخلفية الخاصة بـ Summernote */
+        border: 1px solid #ccc; /* الحدود الخاصة بـ Summernote */
+        min-height: 300px; /* تحديد الحد الأدنى للارتفاع */
+        padding: 10px; /* مساحة داخلية */
+    }
+    .dash .note-toolbar {
+    background-color: #f8f9fa; /* لون خلفية شريط الأدوات */
+    }
+
+    .dash .note-editable {
+    color: #333; /* لون النص */
+    font-family: Arial, sans-serif; /* نوع الخط */
+
+}
+
+</style>
+<!-- Contact Start -->
+    <div class="container-fluid mt-5 pt-3">
+        <div class="container text-right" dir="rtl">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title mb-0 text-right" dir="rtl">
+                        <h4 class="m-0 text-uppercase font-weight-bold" style="font-family: 'Kufam', sans-serif;">لوحة التحكم</h4><a href="{% url 'messages' %}"><i class="fa-solid fa-arrow-left" style="font-size:xx-large;"></i></a>
+                    </div>
+                    <div class="bg-white border border-top-0 p-4 mb-3">
+
+                        <div class="mb-4">
+                            <div class="mb-4 d-flex justify-content-between align-items-center">
+                                <h3 class="text-uppercase font-weight-bold">الرسالة</h3>
+                            </div>
+                            <hr>
+                            <div class="row">
+
+                                <h4>معرف الراسل : <i style="color:#FFCC00; font-style:normal;">{{contact.user.id}}</i></h4>
+                                <h4>اسم المستخدم للراسل : <i style="color:#FFCC00; font-style:normal;">{{contact.user.username}}</i></h4>
+                                <h4>اسم الراسل : <i style="color:#FFCC00; font-style:normal;">{{contact.user.first_name}} {{contact.user.last_name}}</i></h3>
+                                <h4>البريد الالكتروني للراسل : <i style="color:#FFCC00; font-style:normal;">{{contact.user.email}}</i></h4>
+                                <hr style="font-size:x-large;">
+                                <div class="mb-4 d-flex justify-content-center align-items-center">
+                                    <h3 class="text-uppercase font-weight-bold">محتوى الرسالة</h3>
+                                </div>
+                                <h4>معرف الرسالة : <i style="color:#2d2400; font-style:normal;">{{contact.id}}</i></h4>
+                                <h4>الاسم : <i style="color:#2d2400; font-style:normal;">{{contact.name}}</i></h4>
+                                <h4>البريد الالكتروني : <i style="color:#2d2400; font-style:normal;">{{contact.email}}</i></h4>
+                                <h4>رقم الهاتف : <i style="color:#2d2400; font-style:normal;">{{contact.phone}}</i></h4>
+                                <h4>عنوان الرسالة : <i style="color:#2d2400; font-style:normal;">{{contact.subject}}</i></h4><br>
+                                <h4>تاريخ الإنشاء : <i style="color:#2d2400; font-style:normal;">{{contact.creation_date}}</i></h4><br>
+
+                                <table class="table table-striped table-hover main-content">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th scope="col">الرسالة :</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><i style="color:#2d2400; font-style:normal;">{{contact.message}}</i></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <br>
+                                <hr>
+                                <br>
+                            <!-- <div class="table-responsive" style="padding: 20px;">
+                                    <table class="table table-striped table-hover main-content">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th scope="col"></th>
+                                                <th scope="col">المحتوى</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                            <th scope="row">معرف الرسالة : </th>
+                                            <td>{{contact.id}}</td>
+                                            </tr>
+                                            <tr>
+                                            <th scope="row">الاسم : </th>
+                                            <td>{{contact.name}}</td>
+                                            </tr>
+                                            <tr>
+                                            <th scope="row">البريد الإلكتروني : </th>
+                                            <td>{{contact.email}}</td>
+                                            </tr>
+                                            <tr>
+                                            <th scope="row">رقم الهاتف : </th>
+                                            <td>{{contact.phone}}</td>
+                                            </tr>
+                                            <tr>
+                                            <th scope="row">عنوان الرسالة : </th>
+                                            <td>{{contact.subject}}</td>
+                                            </tr>
+                                            <tr>
+                                            <th scope="row">الرسالة : </th>
+                                            <td>{{contact.message}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div> -->
+                                <table class="table table-striped table-hover main-content">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th scope="col">تم رؤيتها بواسطة</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for someone in contact.viewed_by.all %}
+                                        <tr>
+                                            <td>اسم المستخدم : {{someone.username}} , الإسم :   {{someone.first_name}} {{someone.last_name}} {% if request.user == someone %}   <i style="color: #967800; font-style:normal;">(انت)</i>   {% endif %}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <hr>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

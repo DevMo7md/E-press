@@ -1,0 +1,258 @@
+{% extends 'base.html' %}
+{% load static %}
+    
+{% block content %}
+<style>
+
+    .dash .note-editor {
+        background-color: #ffffff; /* الخلفية الخاصة بـ Summernote */
+        border: 1px solid #ccc; /* الحدود الخاصة بـ Summernote */
+        min-height: 300px; /* تحديد الحد الأدنى للارتفاع */
+        padding: 10px; /* مساحة داخلية */
+    }
+    .dash .note-toolbar {
+    background-color: #f8f9fa; /* لون خلفية شريط الأدوات */
+    }
+
+    .dash .note-editable {
+    color: #333; /* لون النص */
+    font-family: Arial, sans-serif; /* نوع الخط */
+
+}
+
+</style>
+<!-- Contact Start -->
+    <div class="container-fluid mt-5 pt-3">
+        <div class="container text-right" dir="rtl">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title mb-0 text-right" dir="rtl">
+                        <h4 class="m-0 text-uppercase font-weight-bold" style="font-family: 'Kufam', sans-serif;">لوحة التحكم</h4><a href="{% url 'messages' %}"><i class="fa-solid fa-envelope" style="font-size:xx-large;"></i></a>
+                    </div>
+                    <div class="bg-white border border-top-0 p-4 mb-3">
+
+                        <div class="mb-4">
+                            <div class="mb-4 d-flex justify-content-between align-items-center">
+                                <h4 class="text-uppercase font-weight-bold">مقالاتك</h4>
+                                <a class="btn btn-sm btn-outline-secondary" href="#add-article">اكتب مقالاً</a>
+                            </div>
+                            </br>
+                            <div>
+                                <form action="{% url 'dashboard' %}" role="search" method="GET">
+                                    <div class="input-group ml-auto" style="width: 100%; max-width: 300px;">
+                                        <input type="text" class="form-control border" style="border-radius: 5px;" name="search-bar" type="search" placeholder="ابحث عن مقالاتك" aria-label="Search" id="search">
+                                        <div class="input-group-append">
+                                            <button class="input-group-text bg-primary text-dark border-0 px-3"><i
+                                                    class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <br><br>
+                            
+                            <div class="row">
+                                {% if articles.count > 8 %}
+                                {% for news in articles|slice:":8" %}
+                                <div class="col-lg-3 mb-4 d-flex">
+                                    <div class="position-relative mb-3">
+                                        <div class="bg-white border border-top-1 p-4">
+                                            <img class="img-fluid w-70" src="{{news.image.url}}" style="object-fit: cover; height:170px;">
+                                        </div>
+                                        <div class="bg-white border border-top-0 p-4  d-flex flex-column h-40 ">
+                                            <div class="mb-2">
+                                                <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                                    href="{% url 'news_by_category' news.category.name %}">{{news.category.name}}</a>
+                                                <a class="text-body" href="{% url 'news_by_date' news.add_date %}"><small>{{news.add_date}}</small></a>
+                                            </div>
+                                            <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" href="{% url 'news_page' news.id %}">{{news.title|truncatechars:18}}</a>
+                                            <p class="m-0">{{news.info|truncatechars:50}}</p>
+                                            <div class="d-flex justify-content-between bg-white p-4">
+                                                <div class="d-flex align-items-center">
+                                                    <a href="{% url 'edit_article' news.id %}" class="btn btn-success" style="border-radius: 3px;">تعديل</a>
+                                                </div>
+
+                                                <div class="d-flex align-items-center">
+                                                    <a href="{% url 'delete_article' news.id %}" class="btn btn-danger" style="border-radius: 3px;">حذف</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
+                                            <div class="d-flex align-items-center">
+                                                <img class="rounded-circle mr-2" src="{{news.journalist.photo.url}}" width="25" height="25" alt="">
+                                                <small>{{news.journalist.author.first_name}} {{news.journalist.author.last_name}}</small>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <small class="ml-3"><i class="far fa-eye mr-2"></i>&nbsp;&nbsp;{{news.num_of_views}}</small>
+                                                <small class="ml-3"><i class="far fa-comment mr-2"></i>&nbsp;&nbsp;{{news.num_of_comments}}</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                                
+                                <div class="collapse" id="allart">
+                                    <br><br>
+                                    <div class="row">
+                                        {% for news in articles|slice:"8:" %}
+                                            <div class="col-lg-3 mb-4 d-flex">
+                                            <div class="position-relative mb-3">
+                                                <div class="bg-white border border-top-1 p-4">
+                                                    <img class="img-fluid w-70" src="{{news.image.url}}" style="object-fit: cover; height:170px;">
+                                                </div>
+                                                <div class="bg-white border border-top-0 p-4  d-flex flex-column h-40 ">
+                                                    <div class="mb-2">
+                                                        <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                                            href="{% url 'news_by_category' news.category.name %}">{{news.category.name}}</a>
+                                                        <a class="text-body" href="{% url 'news_by_date' news.add_date %}"><small>{{news.add_date}}</small></a>
+                                                    </div>
+                                                    <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" href="{% url 'news_page' news.id %}">{{news.title|truncatechars:20}}</a>
+                                                    <p class="m-0">{{news.info|truncatechars:50}}</p>
+                                                    <div class="d-flex justify-content-between bg-white p-4">
+                                                        <div class="d-flex align-items-center">
+                                                            <a href="{% url 'edit_article' news.id %}" class="btn btn-success" style="border-radius: 3px;">تعديل</a>
+                                                        </div>
+
+                                                        <div class="d-flex align-items-center">
+                                                            <a href="{% url 'delete_article' news.id %}" class="btn btn-danger" style="border-radius: 3px;">حذف</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
+                                                    <div class="d-flex align-items-center">
+                                                        <img class="rounded-circle mr-2" src="{{news.journalist.photo.url}}" width="25" height="25" alt="">
+                                                        <small>{{news.journalist.author.first_name}} {{news.journalist.author.last_name}}</small>
+                                                    </div>
+                                                    <div class="d-flex align-items-center">
+                                                        <small class="ml-3"><i class="far fa-eye mr-2"></i>&nbsp;&nbsp;{{news.num_of_views}}</small>
+                                                        <small class="ml-3"><i class="far fa-comment mr-2"></i>&nbsp;&nbsp;{{news.num_of_comments}}</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                {% else %}
+                                
+                                {% for news in articles %}
+                                    <div class="col-lg-3 mb-4 d-flex">
+                                        <div class="position-relative mb-3">
+                                            <div class="bg-white border border-top-1 p-4">
+                                                <img class="img-fluid w-70" src="{{news.image.url}}" style="object-fit: cover; height:170px;">
+                                            </div>
+                                            <div class="bg-white border border-top-0 p-4  d-flex flex-column h-40 ">
+                                                <div class="mb-2">
+                                                    <a class="badge badge-primary text-uppercase font-weight-semi-bold p-2 mr-2"
+                                                        href="{% url 'news_by_category' news.category.name %}">{{news.category.name}}</a>
+                                                    <a class="text-body" href="{% url 'news_by_date' news.add_date %}"><small>{{news.add_date}}</small></a>
+                                                </div>
+                                                <a class="h4 d-block mb-3 text-secondary text-uppercase font-weight-bold" href="{% url 'news_page' news.id %}">{{news.title|truncatechars:20}}</a>
+                                                <p class="m-0">{{news.info|truncatechars:50}}</p>
+                                                <div class="d-flex justify-content-between bg-white p-4">
+                                                    <div class="d-flex align-items-center">
+                                                        <a href="{% url 'edit_article' news.id %}" class="btn btn-success" style="border-radius: 3px;">تعديل</a>
+                                                    </div>
+
+                                                    <div class="d-flex align-items-center">
+                                                        <a href="{% url 'delete_article' news.id %}" class="btn btn-danger" style="border-radius: 3px;">حذف</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex justify-content-between bg-white border border-top-0 p-4">
+                                                <div class="d-flex align-items-center">
+                                                    <img class="rounded-circle mr-2" src="{{news.journalist.photo.url}}" width="25" height="25" alt="">
+                                                    <small>{{news.journalist.author.first_name}} {{news.journalist.author.last_name}}</small>
+                                                </div>
+                                                <div class="d-flex align-items-center">
+                                                    <small class="ml-3"><i class="far fa-eye mr-2"></i>&nbsp;&nbsp;{{news.num_of_views}}</small>
+                                                    <small class="ml-3"><i class="far fa-comment mr-2"></i>&nbsp;&nbsp;{{news.num_of_comments}}</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                {% endif %}
+                                    </div>
+                                </div>
+                                <a id="toggle-art-btn" class="btn btn-sm btn-outline-secondary" href="#allart" data-toggle="collapse" onclick="toggleComments()">عرض كل المقالات</a>
+
+                            </div>
+                            <hr>
+                        </div>
+                        <div class="col-lg-12" id="add-article">
+                            <div class="bg-white border border-top-1 p-4 mb-3">
+                                <h4 class="text-uppercase font-weight-bold">إضافة مقال جديد</h4>
+                                <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    
+                                    <div class="form-group">
+                                        <label for="title">عنوان المقال</label>
+                                        <input type="text" name="title" id="title" class="form-control" placeholder="أدخل عنوان المقال" required>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="info">معلومات مختصرة</label>
+                                        <textarea name="info" id="info" class="form-control" rows="3" placeholder="أدخل ملخص للمقال" required></textarea>
+                                    </div>
+                                    
+                                    <div class="container mt-5 dash">
+                                        <h2>محرر المحتوى</h2>
+                                        <div class="form-group">
+                                            <label for="summernote">المحتوى</label>
+                                            <textarea id="summernote" name="content" class="summernote" placeholder="أدخل المحتوى الكامل للمقال" style="display: none;" required></textarea>
+                                        </div>
+                                    </div>
+
+                                    
+                                    <div class="form-group">
+                                        <label for="word_file">ملف وورد (اختياري)</label>
+                                        <input type="file" name="word_file" id="word_file" class="form-control">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="category">التصنيف</label>
+                                        <select name="category" id="category" class="form-control" required>
+                                            {% for category in categories %}
+                                                <option value="{{ category.id }}">{{ category.name }}</option>
+                                            {% endfor %}
+                                        </select><br>
+                                        <a href="{% url 'add_category' %}" class="btn btn-sm btn-outline-secondary">إضافة تصنيف جديد</a>
+                                        <br><br>
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="image">صورة المقال</label>
+                                        <input type="file" name="image" id="image" class="form-control" required>
+                                    </div>
+                                    
+                                    <div class="form-group form-check">
+                                        <input type="checkbox" name="is_special" id="is_special" class="form-check-input">
+                                        <label for="is_special" class="form-check-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;اجعل المقال مميزًا</label>
+                                    </div>
+                                    
+                                    <div class="form-group form-check">
+                                        <input type="checkbox" name="is_trend" id="is_trend" class="form-check-input">
+                                        <label for="is_trend" class="form-check-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;اجعل المقال رائجًا</label>
+                                    </div>
+                                    
+                                    <button type="submit" class="btn btn-primary">إضافة المقال</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+    function toggleComments() {
+        var commentsDiv = document.getElementById("allart");
+        var toggleBtn = document.getElementById("toggle-art-btn");
+
+        if (commentsDiv.classList.contains("show")) {
+            toggleBtn.textContent = "عرض كل المقالات";
+        } else {
+            toggleBtn.textContent = "مقالات اقل";
+        }
+    }
+    </script>
+<!-- Contact End -->
+{% endblock %}

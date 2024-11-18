@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+    
+{% block content %}
+<style>
+
+    .wrapper{
+        background-color: #f8f9fa;
+        box-shadow: 1px 2px 1px 2px #33333340 !important;
+        padding: 20px;
+        margin: 10px;
+        border-radius: 10px;
+    }
+
+    .dash .note-editor {
+        background-color: #ffffff; /* الخلفية الخاصة بـ Summernote */
+        border: 1px solid #ccc; /* الحدود الخاصة بـ Summernote */
+        min-height: 300px; /* تحديد الحد الأدنى للارتفاع */
+        padding: 10px; /* مساحة داخلية */
+    }
+    .dash .note-toolbar {
+    background-color: #f8f9fa; /* لون خلفية شريط الأدوات */
+    }
+
+    .dash .note-editable {
+    color: #333; /* لون النص */
+    font-family: Arial, sans-serif; /* نوع الخط */
+
+}
+
+</style>
+<!-- Contact Start -->
+    <div class="container-fluid mt-5 pt-3">
+        <div class="container text-right" dir="rtl">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title mb-0 text-right" dir="rtl">
+                        <h4 class="m-0 text-uppercase font-weight-bold" style="font-family: 'Kufam', sans-serif;">لوحة التحكم</h4>
+                    </div>
+                    <div class="d-flex justify-content-center bg-white border border-top-0 p-4 mb-3 ">
+                        <div class="col-lg-12 mb-4 wrapper">
+                            <div class="d-flex justify-content-center col-lg-12">
+                                <h4 class="d-flex m-0 text-uppercase font-weight-bold" style="font-family: 'Kufam', sans-serif;">تعديل المقال</h4>
+                            </div>
+                            <a href="{% url 'dashboard' %}" style="background-color: #FFCC00; color:black; position:absolute; left:0; top:0; margin:20px" class="btn btn-square back-to-last-page"><i class="fa fa-arrow-left"></i></a>
+                            <div class="col-lg-12">
+                                <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+
+                                    <div class="form-group">
+                                        <label for="title">عنوان المقال</label>
+                                        <input type="text" name="title" id="title" class="form-control" value="{{ article.title }}" placeholder="أدخل عنوان المقال" required>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="info">معلومات مختصرة</label>
+                                        <textarea name="info" id="info" class="form-control" rows="3" placeholder="أدخل ملخص للمقال" required>{{ article.info }}</textarea>
+                                    </div>
+
+                                    <div class="container mt-5 dash">
+                                        <h2>محرر المحتوى</h2>
+                                        <div class="form-group">
+                                            <label for="summernote">المحتوى</label>
+                                            <textarea id="summernote" name="content" class="summernote" placeholder="أدخل المحتوى الكامل للمقال" required>{{ article.content }}</textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="word_file">ملف وورد (اختياري)</label>
+                                        <input type="file" name="word_file" id="word_file" class="form-control">
+                                        {% if article.word_file %}
+                                            <small>الملف الحالي: {{ article.word_file.name }}</small>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="category">التصنيف</label>
+                                        <select name="category" id="category" class="form-control" required>
+                                            {% for category in categories %}
+                                                <option value="{{ category.id }}" {% if article.category.id == category.id %}selected{% endif %}>{{ category.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="image">صورة المقال (اختياري)</label>
+                                        <input type="file" name="image" id="image" class="form-control">
+                                        {% if article.image %}
+                                            <small>الصورة الحالية: {{ article.image.url }}</small>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="form-group form-check">
+                                        <input type="checkbox" name="is_special" id="is_special" class="form-check-input" {% if article.is_special %}checked{% endif %}>
+                                        <label for="is_special" class="form-check-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;اجعل المقال مميزًا</label>
+                                    </div>
+
+                                    <div class="form-group form-check">
+                                        <input type="checkbox" name="is_trend" id="is_trend" class="form-check-input" {% if article.is_trend %}checked{% endif %}>
+                                        <label for="is_trend" class="form-check-label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;اجعل المقال رائجًا</label>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">تحديث المقال</button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Contact End -->
+{% endblock %}
