@@ -36,7 +36,7 @@ def main (request):
     categories = Category.objects.all()
 
     advertisment = Advertisment.objects.all()
-    allnews = Article.objects.all()
+    allnews = Article.objects.all().order_by('-add_date')
 
     if 'search-bar' in request.GET:
         searched = request.GET['search-bar']
@@ -51,9 +51,9 @@ def main (request):
         'today':today,
         'today_str':today_str,
         'today_news':today_news,
-        'week_news':week_news,
-        'mounth_news':mounth_news,
-        'last_news':last_news,
+        'week_news':week_news if week_news else allnews,
+        'mounth_news':mounth_news if mounth_news else allnews,
+        'last_news':last_news if last_news else allnews,
         'special_news':special_news,
         'categories':categories,
         'trending_news':trending_news,
